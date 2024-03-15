@@ -28,7 +28,8 @@ int main(){
       int area = 0; // 그림의 넓이
       while(!Q.empty()){
         area++; // 큐에 들어있는 원소를 하나 뺄 때 마다 넓이를 1 증가시킴
-        pair<int,int> cur = Q.front(); Q.pop();
+        pair<int,int> cur = Q.front(); 
+        Q.pop();
         for(int dir = 0; dir < 4; dir++){ // 상하좌우 칸을 살펴볼 것이다.
           int nx = cur.X + dx[dir];
           int ny = cur.Y + dy[dir]; // nx, ny에 dir에서 정한 방향의 인접한 칸의 좌표가 들어감
