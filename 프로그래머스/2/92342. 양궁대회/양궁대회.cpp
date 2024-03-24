@@ -1,57 +1,52 @@
 #include <string>
 #include <vector>
-
 using namespace std;
-vector<int> answer(1,-1);
-int maxDiff = 0;
 
-bool cmp(vector<int> ryan) {
-    
-    for(int i = 10; i >= 0; i--) {
-        if(ryan[i] > answer[i]) return true;
-        else if (ryan[i] < answer[i]) return false;
+int res_max = 0;
+vector<int> answer = {-1};
+
+void dfs(int cnt, int n, int idx, vector<int> info, vector<int> tmp)
+{
+    if (cnt == n)
+    {//화살을 다 쏘았고
+        int res = 0;
+        for (int i=0;i<11;i++)
+        {
+            if (tmp[i]>info[i]) res += (10 - i);
+            else if (info[i]) res -= (10 - i);
+        }
+        if (res > res_max && res)
+        {//점수차가 더 크면
+            res_max = res;
+            answer = tmp;
+        }
+        else if (res == res_max && res)
+        {점수차가 같다면
+            for (int i=10;i>=0;i--)
+            {//가장 낮은 점수를 많이 쏜 경우를 찾는다
+                if (answer[i] > tmp[i]) return;
+                else if (answer[i] < tmp[i])
+                {
+                    answer = tmp;
+                    break;
+                }
+            }
+        }
+        return ;
+    }
+    for(int i=idx;i<=10;i++)
+    {
+        int num = info[i]+1;//점수를 얻으려면 쏘아야하는 개수
+        if (num > n-cnt) num = n - cnt;//가진 화살수보다 쏴야하는 수가 많다면 가진만큼만 쏜다.
+        tmp[i] = num;//쏘고
+        dfs(cnt+num, n, i+1, info, tmp);//dfs넘겨줌
+        tmp[i] = 0;//취소
     }
 }
 
-void calcScore(vector<int> ryan, vector<int> apeach) {
-    int ryanScore = 0;
-    int apeachScore = 0;
-    
-    for(int i = 0; i < 11; i++) {
-        if(ryan[i] > apeach[i]) ryanScore += 10 - i;
-        else if(apeach[i] > 0) apeachScore += 10 - i;
-    }
-    
-    int diff = ryanScore - apeachScore;
-    if(diff > 0 && maxDiff <= diff) {
-        if(maxDiff == diff && !cmp(ryan)) return;
-        maxDiff = diff;
-        answer = ryan;
-    }
-}
-
-
-void solve(int idx, int arrows, vector<int> ryan, vector<int> apeach) {
-    if(idx==11 || arrows == 0) { //분배 끝 
-        ryan[10] += arrows;
-        calcScore(ryan, apeach);
-        ryan[10] -= arrows;
-        return;
-    }
-    if(apeach[idx] < arrows) {
-        ryan[idx] += apeach[idx] +1;
-        solve(idx+1, arrows-apeach[idx]-1, ryan,apeach);
-        ryan[idx] -= apeach[idx] +1;
-    }
-    solve(idx+1, arrows, ryan, apeach);
-}
-
-vector<int> solution(int n, vector<int> info) {
-    vector<int> ryan(11,0);
-    
-    solve(0,n, ryan, info);
-
-    if(answer.empty()) answer.push_back(-1);
-    
+vector<int> solution(int n, vector<int> info)
+{
+    vector<int> tmp(11, 0);//라이언이 쏜 기록
+    dfs(0, n, 0, info, tmp);
     return answer;
 }
