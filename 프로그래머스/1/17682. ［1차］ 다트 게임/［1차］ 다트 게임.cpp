@@ -3,40 +3,42 @@
 
 using namespace std;
 
-int solution(string dartResult) {
+int solution(string dartResult) { // 점수, 보너스, 옵션 순서
     int answer = 0;
-    string num = "";
-    int idx = 0;
-    vector<int> result;
-    for (int i = 0; i < dartResult.size(); i++) {
-        char c = dartResult[i];
-        if (c >= '0' && c <= '9') num += c;
-        else if (c == 'S') {
-            result.push_back(stoi(num));
-            num = "";
-            idx++;
+    vector<int> dart; // [첫 번째 점수, 두 번째 점수, 세 번째 점수]
+    string score;
+    
+    for(char d: dartResult)
+    {
+        if(d >= '0' && d<= '9')
+              score += d; 
+        else if(d >= 'A' && d<= 'Z')
+        {
+            int s = stoi(score);
+            if(d=='S')  
+                dart.push_back(s);
+            else if(d=='D')
+                dart.push_back(s*s);     
+            else if(d=='T')
+                dart.push_back(s*s*s);     
+            score = "";
         }
-        else if (c == 'D') {
-            int n = stoi(num);
-            result.push_back(n * n);
-            num = "";
-            idx++;
-        }
-        else if (c == 'T') {
-            int n = stoi(num);
-            result.push_back(n * n * n);
-            num = "";
-            idx++;
-        }
-        else if (c == '*') {
-            if (idx == 1) result[idx - 1] *= 2;
-            else {               
-                result[idx - 1] *= 2;
-                result[idx - 2] *= 2;
+        else
+        {
+            int i = dart.size();
+            if(d=='*')
+            {    
+                dart[i-1] *= 2;
+                if(i>1)
+                    dart[i-2] *= 2;
+            }
+            else if(d=='#')
+            {
+                dart[i-1] *= (-1);
             }
         }
-        else if (c == '#') result[idx - 1] = -result[idx - 1];
     }
-    for (auto& x : result) answer += x;
+    for(int i=0; i<dart.size(); i++)
+        answer += dart[i];
     return answer;
 }
