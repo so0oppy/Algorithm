@@ -6,17 +6,7 @@ using namespace std;
 
 int solution(vector<vector<int>> board, vector<int> moves) {
     int answer = 0; // 터트려져 사라진 인형 개수 (2의 배수)
-    // vector<vector<int>> column(5, vector<int> (5, 0));// 세로 배열로 저장
     vector<int> store; // 이전 인형 저장
-    // // board의 뒤에서부터 column에 push_back
-    // for(int i=board.size()-1; i >= 0; i--)
-    // {
-    //     for(int j=0; j<board[i].size(); j++)
-    //     {
-    //         int b = board[i][j];
-    //         column[j][board.size()-i-1] = b;
-    //     }
-    // }
     // board내 배열의 index를 0부터 검사해서 0이 아닌 수가 나오면 doll에 저장
     // 저장 후엔 해당 수를 0으로 변환
     for(int m: moves)
