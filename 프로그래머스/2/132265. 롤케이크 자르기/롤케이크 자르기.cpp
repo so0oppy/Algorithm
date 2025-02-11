@@ -1,13 +1,13 @@
 #include <string>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 using namespace std;
 
 int solution(vector<int> topping) {
     int answer = 0;
-    map<int, int> piece1;
-    map<int, int> piece2;
+    unordered_map<int, int> piece1;
+    unordered_map<int, int> piece2;
     // 
     for(int i=0; i<topping.size(); i++)
     {
