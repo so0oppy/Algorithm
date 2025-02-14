@@ -3,9 +3,9 @@
 
 using namespace std;
 
-int solution(vector<vector<int> > maps)
+int solution(vector<vector<int>> maps)
 {
-		//현재 위치와 현재 걸음 수 기록을 담는 queue
+			//현재 위치와 현재 걸음 수 기록을 담는 queue
     queue<pair<pair<int, int>, int>> q;
     
     //현재 타일에 방문한 적이 있는지 확인하는 vector
