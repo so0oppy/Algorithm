@@ -5,39 +5,31 @@
 
 using namespace std;
 
+void DFS(int i, int n, vector<vector<int>> &computers, vector<int> &visited)
+{
+    for(int j=0; j<n; j++)
+    {
+        if(visited[j] == 0 && i != j && computers[i][j] == 1)
+        {
+            visited[j] = 1;
+            DFS(j, n, computers, visited);
+        }
+    }
+    return;
+}
 
 int solution(int n, vector<vector<int>> computers) {
-    int answer{0};
-    map<int,vector<int>> m;
-    vector<bool> visit(n,false);
-
-    for(int i=0;i<n;++i){
-        for(int j=0;j<n;++j){
-            if(computers[i][j] != 1) continue;
-            m[i].push_back(j);
-        }
+    int network = 0;
+    vector<int> visited(n, 0);
+    
+    for(int i=0; i<n; i++)
+    {
+        if(visited[i] == 1) continue;
+        
+        network++;
+        visited[i] = 1;
+        DFS(i, n, computers, visited);
     }
-
-    for(int k=0;k<n;++k){ //모든 노드를 시작지점으로.
-        if(visit[k]) continue;
-
-        queue<int> q;
-        visit[k] = true;
-        ++answer;
-        q.push(k);
-
-        while(!q.empty()){
-            int cur = q.front();
-            q.pop();
-            for(int i=0;i<m[cur].size();++i){
-                if(visit[m[cur][i]] != false) continue;
-                visit[m[cur][i]] = true; 
-                q.push(m[cur][i]);
-            }
-
-        }
-    }
-
-
-    return answer;
+    
+    return network;
 }
